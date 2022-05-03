@@ -1,5 +1,4 @@
 export interface IConfig {
-  tilesetPath: string;
   quality: number;
   scale: [number, number];
   blockSize: number;
@@ -14,7 +13,6 @@ export interface IConfig {
 }
 
 export const config: IConfig = {
-  tilesetPath: "assets/tileset2.png",
   quality: 5,
   scale: [10, 10],
   blockSize: 16,

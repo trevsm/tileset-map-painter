@@ -5,11 +5,7 @@ import { useCanvasContext } from "../hooks/useCanvasContext";
 import { useSprite } from "../hooks/useSprite";
 import { Tile, useTileGrid } from "../hooks/useTileGrid";
 import { Tool, useTools } from "../hooks/useTools";
-import {
-  convertToRealPosition,
-  downloadObjectAsJson,
-  getMouseTilePosition,
-} from "../tools";
+import { convertToRealPosition, getMouseTilePosition } from "../tools";
 
 const Board = styled.canvas<{ tool: Tool }>`
   display: block;
@@ -23,7 +19,7 @@ const ArtboardContainer = styled.div`
 `;
 
 export default function Artboard() {
-  const { currentTile, tilesetSource, setTilesetSource } = useSprite();
+  const { currentTile, tilesetSource } = useSprite();
   const { selectedTool } = useTools();
   const {
     dimensions,
@@ -167,7 +163,6 @@ export default function Artboard() {
   useEffect(() => {
     if (!boardRef.current) return;
 
-    const { tilesetPath } = config;
     const grid = getGrid();
 
     boardRef.current.width =
@@ -180,16 +175,12 @@ export default function Artboard() {
     boardContext.imageSmoothingEnabled = false;
     setContext(boardContext);
 
-    const image = new Image();
-    image.src = require("../" + tilesetPath);
-    image.onload = () => {
-      setTilesetSource(image);
-
-      if (grid.length)
-        writeToBoard({ altContext: boardContext, altImage: image });
-      else initilizeGrid();
-    };
-  }, []);
+    if (tilesetSource) {
+      if (grid.length) {
+        writeToBoard({ altContext: boardContext });
+      } else initilizeGrid();
+    }
+  }, [tilesetSource]);
 
   const firstMount = useRef(false);
   useEffect(() => {
