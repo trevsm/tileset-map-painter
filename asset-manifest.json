@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/static/css/main.f12d0f78.css",
-    "main.js": "/static/js/main.1bb9f02a.js",
-    "index.html": "/index.html"
+    "main.css": "/tileset-map-painter/static/css/main.f12d0f78.css",
+    "main.js": "/tileset-map-painter/static/js/main.4c208865.js",
+    "index.html": "/tileset-map-painter/index.html"
   },
   "entrypoints": [
     "static/css/main.f12d0f78.css",
-    "static/js/main.1bb9f02a.js"
+    "static/js/main.4c208865.js"
   ]
 }
