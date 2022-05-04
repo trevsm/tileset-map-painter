@@ -19,12 +19,14 @@ export interface CanvasState {
     index,
     position,
     altContext,
+    opacity,
   }: {
     image: HTMLImageElement;
     index: Tile | null;
     position: { X: number; Y: number };
     altContext?: CanvasRenderingContext2D;
     config: IConfig;
+    opacity?: number;
   }) => void;
 }
 export const useCanvasContext = () =>
@@ -43,7 +45,7 @@ export const useCanvasContext = () =>
         context.stroke();
       }
     },
-    drawTile: ({ image, index, position, altContext, config }) => {
+    drawTile: ({ image, index, position, altContext, config, opacity = 1 }) => {
       const { blockSize, tileset } = config;
 
       const int = 1;
@@ -62,6 +64,7 @@ export const useCanvasContext = () =>
       const sy = blockSize * (tileset.heightCount - 1 - index.y);
 
       if (altContext) {
+        altContext.globalAlpha = opacity;
         altContext.drawImage(
           image,
           sx + int / 2,
@@ -75,6 +78,7 @@ export const useCanvasContext = () =>
         );
         return;
       }
+      if (context) context.globalAlpha = opacity;
       context?.drawImage(
         image,
         sx + int / 2,

@@ -91,23 +91,9 @@ export default function Artboard() {
     writeToBoard();
     if (!mousePos) return;
 
-    const { X, Y } = convertToRealPosition({
-      position: mousePos,
-      size: boardRef.current,
-      gridSize,
-    });
-
-    const padding = 1;
+    context.fillRect(0, 0, gridSize.widthCount, gridSize.heightCount);
 
     writeToBoard();
-    drawRect({
-      size: {
-        width: width / gridSize.widthCount - padding,
-        height: height / gridSize.heightCount - padding,
-      },
-      position: { x: X + padding / 2, y: Y + padding / 2 },
-      outline: { ...config.tileset.outline, color: getOutlineColor() },
-    });
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -141,13 +127,21 @@ export default function Artboard() {
 
     const padding = 1;
 
+    context.fillRect(0, 0, gridSize.widthCount, gridSize.heightCount);
     writeToBoard();
+    drawTile({
+      image: tilesetSource,
+      index: currentTile,
+      position: { X: X + padding / 2, Y: Y + padding / 2 - 1 },
+      config,
+      opacity: 0.75,
+    });
     drawRect({
       size: {
         width: width / gridSize.widthCount - padding,
         height: height / gridSize.heightCount - padding,
       },
-      position: { x: X + padding / 2, y: Y + padding / 2 },
+      position: { x: X + padding / 2, y: Y + padding / 2 - 1 },
       outline: { ...config.tileset.outline, color: getOutlineColor() },
     });
   };
