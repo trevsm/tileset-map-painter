@@ -11,7 +11,7 @@ export interface CanvasState {
     outline,
   }: {
     size: { width: number; height: number };
-    position: { x: number; y: number };
+    position: { X: number; Y: number };
     outline: { width: number; padding: number; color?: string };
   }) => void;
   drawTile: ({
@@ -41,7 +41,7 @@ export const useCanvasContext = () =>
         context.lineWidth = outline.width;
         context.strokeStyle = outline.color || "#000";
         context.beginPath();
-        context.rect(position.x, position.y, size.width, size.height);
+        context.rect(position.X, position.Y, size.width, size.height);
         context.stroke();
       }
     },

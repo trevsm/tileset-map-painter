@@ -101,6 +101,7 @@ export default function Artboard() {
 
     const { width, height } = boardRef.current;
     const gridSize = getDimensions();
+    const grid = getGrid();
 
     const { x, y } = getMouseTilePosition({
       event: e,
@@ -127,21 +128,44 @@ export default function Artboard() {
 
     const padding = 1;
 
+    const position = { X: X + padding / 2, Y: Y + padding / 2 - 1 };
+    const rectSize = {
+      width: width / gridSize.widthCount - padding,
+      height: height / gridSize.heightCount - padding,
+    };
+
     context.fillRect(0, 0, gridSize.widthCount, gridSize.heightCount);
     writeToBoard();
-    drawTile({
-      image: tilesetSource,
-      index: currentTile,
-      position: { X: X + padding / 2, Y: Y + padding / 2 - 1 },
-      config,
-      opacity: 0.75,
-    });
+    if (selectedTool == Tool.erase) {
+      context.clearRect(
+        position.X,
+        position.Y,
+        rectSize.width,
+        rectSize.height
+      );
+
+      if (!mouseDown)
+        drawTile({
+          image: tilesetSource,
+          index: grid[x][y],
+          position,
+          config,
+          opacity: 0.5,
+        });
+    }
+    if (selectedTool == Tool.draw && !mouseDown) {
+      drawTile({
+        image: tilesetSource,
+        index: currentTile,
+        position,
+        config,
+        opacity: 0.75,
+      });
+    }
+    context.globalAlpha = 1;
     drawRect({
-      size: {
-        width: width / gridSize.widthCount - padding,
-        height: height / gridSize.heightCount - padding,
-      },
-      position: { x: X + padding / 2, y: Y + padding / 2 - 1 },
+      size: rectSize,
+      position,
       outline: { ...config.tileset.outline, color: getOutlineColor() },
     });
   };

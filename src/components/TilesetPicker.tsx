@@ -57,7 +57,7 @@ export function TilesetPicker() {
         width: width / tileset.widthCount - padding,
         height: height / tileset.heightCount - padding,
       },
-      position: { x: X + padding / 2, y: Y + padding / 2 },
+      position: { X: X + padding / 2, Y: Y + padding / 2 },
       outline: config.tileset.outline,
     });
   };
@@ -95,7 +95,7 @@ export function TilesetPicker() {
           width: width / tileset.widthCount - padding,
           height: height / tileset.heightCount - padding,
         },
-        position: { x: X + padding / 2, y: Y + padding / 2 },
+        position: { X: X + padding / 2, Y: Y + padding / 2 },
         outline: config.tileset.outline,
       });
     } else {
