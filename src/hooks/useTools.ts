@@ -3,6 +3,7 @@ import create from "zustand";
 export enum Tool {
   draw,
   erase,
+  replaceAll,
 }
 
 interface ToolState {

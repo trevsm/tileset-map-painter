@@ -28,6 +28,7 @@ export default function Artboard() {
     setTile,
     loopGrid,
     resizeGrid,
+    setGrid,
   } = useTileGrid();
   const [useStore] = useState(() => useCanvasContext());
   const { context, setContext, drawTile, drawRect } = useStore();
@@ -41,7 +42,7 @@ export default function Artboard() {
     if (selectedTool === Tool.draw) {
       return "#00000050";
     }
-    if (selectedTool === Tool.erase) {
+    if (selectedTool === Tool.erase || selectedTool === Tool.replaceAll) {
       return "#ff000080";
     }
   };
@@ -87,8 +88,16 @@ export default function Artboard() {
       setTile({ tile: currentTile, position: mousePos });
     if (selectedTool === Tool.erase)
       setTile({ tile: null, position: mousePos });
+    if (selectedTool == Tool.replaceAll) {
+      //
+      let nextGrid: (Tile | null)[][] = getGrid();
+      if (nextGrid)
+        nextGrid = nextGrid.map((row) => row.map(() => currentTile));
 
-    writeToBoard();
+      setGrid(nextGrid);
+    }
+
+    // writeToBoard();
     if (!mousePos) return;
 
     context.fillRect(0, 0, gridSize.widthCount, gridSize.heightCount);
@@ -153,7 +162,21 @@ export default function Artboard() {
           opacity: 0.5,
         });
     }
-    if (selectedTool == Tool.draw && !mouseDown) {
+    if (selectedTool == Tool.replaceAll) {
+      //
+      drawRect({
+        size: {
+          width: boardRef.current.width - 10,
+          height: boardRef.current.height - 10,
+        },
+        position: { X: 5, Y: 5 },
+        outline: { ...config.tileset.outline, color: getOutlineColor() },
+      });
+    }
+    if (
+      (selectedTool == Tool.draw || selectedTool == Tool.replaceAll) &&
+      !mouseDown
+    ) {
       drawTile({
         image: tilesetSource,
         index: currentTile,
@@ -163,11 +186,12 @@ export default function Artboard() {
       });
     }
     context.globalAlpha = 1;
-    drawRect({
-      size: rectSize,
-      position,
-      outline: { ...config.tileset.outline, color: getOutlineColor() },
-    });
+    if (selectedTool !== Tool.replaceAll)
+      drawRect({
+        size: rectSize,
+        position,
+        outline: { ...config.tileset.outline, color: getOutlineColor() },
+      });
   };
 
   const clearArtboard = () => {

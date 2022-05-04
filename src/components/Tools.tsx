@@ -62,7 +62,7 @@ export default function Tools() {
   }, [tilsetSize]);
 
   useEffect(() => {
-    setTool(Tool.draw);
+    if (selectedTool == Tool.erase) setTool(Tool.draw);
   }, [currentTile]);
 
   return (
@@ -83,6 +83,15 @@ export default function Tools() {
           name="tool"
           onChange={() => setTool(Tool.erase)}
           checked={selectedTool === Tool.erase}
+        />
+      </label>
+      <label>
+        Fill All
+        <input
+          type="radio"
+          name="tool"
+          onChange={() => setTool(Tool.replaceAll)}
+          checked={selectedTool === Tool.replaceAll}
         />
       </label>
       <br />
