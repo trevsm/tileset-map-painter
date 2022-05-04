@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/tileset-map-painter/static/css/main.43bbcf57.css",
-    "main.js": "/tileset-map-painter/static/js/main.5bf99417.js",
+    "main.js": "/tileset-map-painter/static/js/main.bdc4ef1d.js",
     "index.html": "/tileset-map-painter/index.html",
     "main.43bbcf57.css.map": "/tileset-map-painter/static/css/main.43bbcf57.css.map",
-    "main.5bf99417.js.map": "/tileset-map-painter/static/js/main.5bf99417.js.map"
+    "main.bdc4ef1d.js.map": "/tileset-map-painter/static/js/main.bdc4ef1d.js.map"
   },
   "entrypoints": [
     "static/css/main.43bbcf57.css",
-    "static/js/main.5bf99417.js"
+    "static/js/main.bdc4ef1d.js"
   ]
 }
