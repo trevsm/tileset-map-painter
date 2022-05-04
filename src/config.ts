@@ -17,7 +17,7 @@ export const config: IConfig = {
   scale: [10, 10],
   blockSize: 16,
   tileset: {
-    widthCount: 8,
+    widthCount: 16,
     heightCount: 8,
     outline: {
       width: 2,

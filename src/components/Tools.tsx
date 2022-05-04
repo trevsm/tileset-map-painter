@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { config } from "../config";
 import { useSprite } from "../hooks/useSprite";
 import { useTileGrid } from "../hooks/useTileGrid";
 import { useTools, Tool } from "../hooks/useTools";
 import { downloadObjectAsJson } from "../tools";
-
-const { widthCount, heightCount } = config.tileset;
 
 const SizeInput = styled.input`
   width: 50px;
 `;
 
 export default function Tools() {
-  const { currentTile, setTilesetSource } = useSprite();
+  const { currentTile, setTilesetSource, size, setSize, getStoredSize } =
+    useSprite();
   const { selectedTool, setTool } = useTools();
   const { getDimensions, setDimensions, getGrid } = useTileGrid();
 
   const [dim, setDim] = useState(getDimensions());
+  const storedSize = getStoredSize();
+  const [tilsetSize, setTilesetSize] = useState(storedSize ? storedSize : size);
 
-  const withinLimit = (value: number) => {
+  const artboardLimit = (value: number) => {
     if (value > 0 && value <= 100) return true;
+    return false;
+  };
+
+  const tilesetLimit = (value: number) => {
+    if (value > 0 && value <= 30) return true;
     return false;
   };
 
@@ -53,6 +58,10 @@ export default function Tools() {
   }, [dim]);
 
   useEffect(() => {
+    setSize(tilsetSize);
+  }, [tilsetSize]);
+
+  useEffect(() => {
     setTool(Tool.draw);
   }, [currentTile]);
 
@@ -82,26 +91,26 @@ export default function Tools() {
           Tileset Size:{" "}
           <SizeInput
             type="number"
-            value={widthCount}
+            value={tilsetSize?.widthCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              // if (withinLimit(value))
-              //   setDim((state) => ({
-              //     ...state,
-              //     widthCount: value,
-              //   }));
+              if (tilesetLimit(value))
+                setTilesetSize((state) => ({
+                  ...state,
+                  widthCount: value,
+                }));
             }}
           />
           <SizeInput
             type="number"
-            value={heightCount}
+            value={tilsetSize?.heightCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              // if (withinLimit(value))
-              //   setDim((state) => ({
-              //     ...state,
-              //     heightCount: value,
-              //   }));
+              if (tilesetLimit(value))
+                setTilesetSize((state) => ({
+                  ...state,
+                  heightCount: value,
+                }));
             }}
           />
         </label>
@@ -114,7 +123,7 @@ export default function Tools() {
             value={dim.widthCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (withinLimit(value))
+              if (artboardLimit(value))
                 setDim((state) => ({
                   ...state,
                   widthCount: value,
@@ -126,7 +135,7 @@ export default function Tools() {
             value={dim.heightCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (withinLimit(value))
+              if (artboardLimit(value))
                 setDim((state) => ({
                   ...state,
                   heightCount: value,

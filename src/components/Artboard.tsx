@@ -19,7 +19,7 @@ const ArtboardContainer = styled.div`
 `;
 
 export default function Artboard() {
-  const { currentTile, tilesetSource } = useSprite();
+  const { currentTile, tilesetSource, size } = useSprite();
   const { selectedTool } = useTools();
   const {
     dimensions,
@@ -66,7 +66,7 @@ export default function Artboard() {
         index,
         position,
         altContext,
-        config,
+        config: { ...config, ...size },
       })
     );
   };

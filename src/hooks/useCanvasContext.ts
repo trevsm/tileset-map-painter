@@ -44,7 +44,7 @@ export const useCanvasContext = () =>
       }
     },
     drawTile: ({ image, index, position, altContext, config }) => {
-      const { quality, scale, blockSize, tileset } = config;
+      const { blockSize, tileset } = config;
 
       const int = 1;
 

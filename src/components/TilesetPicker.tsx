@@ -10,8 +10,13 @@ const Tileset = styled.canvas`
 `;
 
 export function TilesetPicker() {
-  const { tilesetSource, setCurrentTile, getStoredSource, setTilesetSource } =
-    useSprite();
+  const {
+    tilesetSource,
+    size: tileset,
+    setCurrentTile,
+    getStoredSource,
+    setTilesetSource,
+  } = useSprite();
   const [useStore] = useState(() => useCanvasContext());
   const { context, setContext, drawRect } = useStore();
 
@@ -19,10 +24,9 @@ export function TilesetPicker() {
   const { padding } = config.tileset.outline;
 
   const handleTilesetClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!context || !tilesetRef.current || !tilesetSource) return;
+    if (!context || !tilesetRef.current || !tilesetSource || !tileset) return;
 
     const { width, height } = tilesetRef.current;
-    const { tileset } = config;
 
     const mousePos = getMouseTilePosition({
       event: e,
@@ -61,7 +65,7 @@ export function TilesetPicker() {
   useEffect(() => {
     if (!tilesetRef.current) return;
 
-    const { tileset, scale, quality } = config;
+    const { scale, quality } = config;
 
     tilesetRef.current.width = tileset.widthCount * scale[0] * quality;
     tilesetRef.current.height = tileset.heightCount * scale[1] * quality;
@@ -105,7 +109,7 @@ export function TilesetPicker() {
         return;
       }
     }
-  }, [tilesetSource]);
+  }, [tilesetSource, tileset]);
 
   return <Tileset ref={tilesetRef} onMouseDown={handleTilesetClick}></Tileset>;
 }
