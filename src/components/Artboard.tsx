@@ -11,7 +11,6 @@ const Board = styled.canvas<{ tool: Tool }>`
   display: block;
   cursor: ${({ tool }) => (tool === Tool.draw ? "copy" : "crosshair")};
   margin-top: 20px;
-  margin: 0 auto;
 `;
 
 const ArtboardContainer = styled.div`

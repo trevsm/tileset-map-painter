@@ -34,8 +34,8 @@ export default function Tools() {
 
     // grid trimmed to widthCount and heightCount
     const finalGrid = getGrid()
-      .map((row) => row.filter((_, i) => i < widthCount))
-      .filter((_, i) => i < heightCount);
+      .filter((_, i) => i < widthCount)
+      .map((row) => row.filter((_, i) => i < heightCount));
 
     downloadObjectAsJson(finalGrid, "tileset_values");
   };
