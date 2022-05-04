@@ -94,7 +94,10 @@ export default function Artboard() {
       if (nextGrid)
         nextGrid = nextGrid.map((row) => row.map(() => currentTile));
 
-      setGrid(nextGrid);
+      if (
+        confirm("Replacing ALL tiles on artboard with selected tile; continue?")
+      )
+        setGrid(nextGrid);
     }
 
     // writeToBoard();
