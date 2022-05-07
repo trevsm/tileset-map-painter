@@ -253,6 +253,9 @@ export default function Artboard() {
   return (
     <ArtboardContainer>
       <button onClick={clearArtboard}>Clear Artboard</button>{" "}
+      <button onClick={() => window.location.reload()}>
+        Fix artboard blur
+      </button>
       <Board
         ref={boardRef}
         tool={selectedTool}

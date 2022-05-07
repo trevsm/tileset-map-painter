@@ -17,7 +17,9 @@ export default function Tools() {
 
   const [dim, setDim] = useState(getDimensions());
   const storedSize = getStoredSize();
-  const [tilsetSize, setTilesetSize] = useState(storedSize ? storedSize : size);
+  const [tilesetSize, setTilesetSize] = useState(
+    storedSize ? storedSize : size
+  );
 
   const artboardLimit = (value: number) => {
     if (value > 0 && value <= 100) return true;
@@ -54,12 +56,8 @@ export default function Tools() {
   };
 
   useEffect(() => {
-    setDimensions(dim);
-  }, [dim]);
-
-  useEffect(() => {
-    setSize(tilsetSize);
-  }, [tilsetSize]);
+    setSize(tilesetSize);
+  }, []);
 
   useEffect(() => {
     if (selectedTool == Tool.erase) setTool(Tool.draw);
@@ -100,28 +98,41 @@ export default function Tools() {
           Tileset Size:{" "}
           <SizeInput
             type="number"
-            value={tilsetSize?.widthCount}
+            value={tilesetSize?.widthCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (tilesetLimit(value))
-                setTilesetSize((state) => ({
-                  ...state,
-                  widthCount: value,
-                }));
+              setTilesetSize((state) => ({
+                ...state,
+                widthCount: value,
+              }));
             }}
           />
           <SizeInput
             type="number"
-            value={tilsetSize?.heightCount}
+            value={tilesetSize?.heightCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (tilesetLimit(value))
-                setTilesetSize((state) => ({
-                  ...state,
-                  heightCount: value,
-                }));
+              setTilesetSize((state) => ({
+                ...state,
+                heightCount: value,
+              }));
             }}
           />
+          <button
+            onClick={() => {
+              if (
+                tilesetLimit(tilesetSize.heightCount) &&
+                tilesetLimit(tilesetSize.widthCount)
+              )
+                setSize(tilesetSize);
+              else
+                alert(
+                  "Unable to set tileset size. Must be within {0<values<30}"
+                );
+            }}
+          >
+            set
+          </button>
         </label>
         <br />
         <br />
@@ -132,11 +143,10 @@ export default function Tools() {
             value={dim.widthCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (artboardLimit(value))
-                setDim((state) => ({
-                  ...state,
-                  widthCount: value,
-                }));
+              setDim((state) => ({
+                ...state,
+                widthCount: value,
+              }));
             }}
           />
           <SizeInput
@@ -144,13 +154,24 @@ export default function Tools() {
             value={dim.heightCount}
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              if (artboardLimit(value))
-                setDim((state) => ({
-                  ...state,
-                  heightCount: value,
-                }));
+              setDim((state) => ({
+                ...state,
+                heightCount: value,
+              }));
             }}
           />
+          <button
+            onClick={() => {
+              if (
+                artboardLimit(dim.widthCount) &&
+                artboardLimit(dim.heightCount)
+              )
+                setDimensions(dim);
+              else alert("Unable to set. Must be within {0<values<100}");
+            }}
+          >
+            set
+          </button>
         </label>
       </p>
       <hr />
