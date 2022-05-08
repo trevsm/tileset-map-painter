@@ -23,6 +23,7 @@ export interface TileGridState {
   }) => void;
   initilizeGrid: () => void;
   resizeGrid: () => void;
+  offsetGrid: (offset: { x: number; y: number }) => void;
   getGrid: () => Tile[][];
   setGrid: (grid: (Tile | null)[][]) => void;
   setTile: ({
@@ -57,6 +58,28 @@ export const useTileGrid = create<TileGridState>((set, get) => ({
       localStorage.setItem(localDimensionsKey, JSON.stringify(dimensions));
       set({ dimensions });
     }
+  },
+  offsetGrid: ({ x, y }) => {
+    const { setGrid, setDimensions } = get();
+    const grid = get().getGrid();
+
+    let newGrid = [...grid];
+
+    if (x > 0)
+      newGrid = [...Array(x).fill(Array(grid[0].length).fill(null)), ...grid];
+    if (x < 0) newGrid = newGrid.filter((_, idx) => idx >= Math.abs(x));
+
+    if (y > 0) newGrid = newGrid.map((row) => [...Array(y).fill(null), ...row]);
+    if (y < 0)
+      newGrid = newGrid.map((row) =>
+        row.filter((_, idx) => idx >= Math.abs(y))
+      );
+
+    setGrid(newGrid);
+    setDimensions({
+      widthCount: newGrid.length,
+      heightCount: newGrid[0].length,
+    });
   },
   initilizeGrid: () => {
     const { widthCount, heightCount } = get().getDimensions();

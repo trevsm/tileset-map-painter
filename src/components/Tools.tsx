@@ -13,13 +13,14 @@ export default function Tools() {
   const { currentTile, setTilesetSource, size, setSize, getStoredSize } =
     useSprite();
   const { selectedTool, setTool } = useTools();
-  const { getDimensions, setDimensions, getGrid } = useTileGrid();
+  const { getDimensions, setDimensions, getGrid, offsetGrid } = useTileGrid();
 
   const [dim, setDim] = useState(getDimensions());
   const storedSize = getStoredSize();
   const [tilesetSize, setTilesetSize] = useState(
     storedSize ? storedSize : size
   );
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const artboardLimit = (value: number) => {
     if (value > 0 && value <= 100) return true;
@@ -94,6 +95,40 @@ export default function Tools() {
       </label>
       <br />
       <p>
+        <label>
+          Offset Artwork:{" "}
+          <SizeInput
+            type="number"
+            value={offset.x}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              setOffset((state) => ({
+                ...state,
+                x: value,
+              }));
+            }}
+          />
+          <SizeInput
+            type="number"
+            value={offset.y}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              setOffset((state) => ({
+                ...state,
+                y: value,
+              }));
+            }}
+          />
+          <button
+            onClick={() => {
+              offsetGrid(offset);
+            }}
+          >
+            set
+          </button>
+        </label>
+        <br />
+        <br />
         <label>
           Tileset Size:{" "}
           <SizeInput
@@ -179,6 +214,7 @@ export default function Tools() {
         <p>Upload tileset image:</p>
         <input type="file" onChange={handleTilesetImageUpload} />
       </label>
+
       <button onClick={handleDownload}>Download Json</button>
     </div>
   );
