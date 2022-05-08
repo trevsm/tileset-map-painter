@@ -13,7 +13,8 @@ export default function Tools() {
   const { currentTile, setTilesetSource, size, setSize, getStoredSize } =
     useSprite();
   const { selectedTool, setTool } = useTools();
-  const { getDimensions, setDimensions, getGrid, offsetGrid } = useTileGrid();
+  const { getDimensions, setDimensions, getGrid, offsetGrid, setGrid } =
+    useTileGrid();
 
   const [dim, setDim] = useState(getDimensions());
   const storedSize = getStoredSize();
@@ -53,6 +54,16 @@ export default function Tools() {
       image.onload = () => {
         setTilesetSource(image);
       };
+    };
+  };
+
+  const handleImport = (e: any) => {
+    const reader = new FileReader();
+    reader.readAsText(e.target.files[0]);
+
+    reader.onload = (event: any) => {
+      const result = JSON.parse(event.target.result);
+      setGrid(result);
     };
   };
 
@@ -214,8 +225,11 @@ export default function Tools() {
         <p>Upload tileset image:</p>
         <input type="file" onChange={handleTilesetImageUpload} />
       </label>
-
-      <button onClick={handleDownload}>Download Json</button>
+      <label>
+        <p>Import artboard (.json)</p>
+        <input type="file" onChange={handleImport} accept="application/json" />
+      </label>
+      <button onClick={handleDownload}>Export artboard </button>
     </div>
   );
 }

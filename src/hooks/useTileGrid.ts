@@ -65,8 +65,12 @@ export const useTileGrid = create<TileGridState>((set, get) => ({
 
     let newGrid = [...grid];
 
+    console.log(grid);
+
     if (x > 0)
       newGrid = [...Array(x).fill(Array(grid[0].length).fill(null)), ...grid];
+    console.log(newGrid);
+
     if (x < 0) newGrid = newGrid.filter((_, idx) => idx >= Math.abs(x));
 
     if (y > 0) newGrid = newGrid.map((row) => [...Array(y).fill(null), ...row]);
@@ -75,11 +79,13 @@ export const useTileGrid = create<TileGridState>((set, get) => ({
         row.filter((_, idx) => idx >= Math.abs(y))
       );
 
-    setGrid(newGrid);
-    setDimensions({
-      widthCount: newGrid.length,
-      heightCount: newGrid[0].length,
-    });
+    if (x !== 0 || y !== 0) {
+      setDimensions({
+        widthCount: newGrid.length,
+        heightCount: newGrid[0].length,
+      });
+      setGrid(newGrid);
+    }
   },
   initilizeGrid: () => {
     const { widthCount, heightCount } = get().getDimensions();
